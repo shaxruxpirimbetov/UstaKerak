@@ -2,10 +2,11 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 
 from apps.user.models import Master
+from apps.user.permissions import IsMaster
 from apps.notification.models import Notification
 from .models import Application
 from .serializers import ApplicationSerializer
-from .permissions import IsAdminOrMine, IsMaster
+from .permissions import IsAdminOrMine
 
 
 class ApplicationListCreateAPIView(generics.ListCreateAPIView):

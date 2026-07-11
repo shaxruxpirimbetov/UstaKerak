@@ -25,7 +25,7 @@ class Master(models.Model):
     bio = models.TextField(validators=[MinLengthValidator(5), MaxLengthValidator(1050)])
     experience_year = models.FloatField(validators=[MinValueValidator(0)], default=0)
     working_area = models.CharField(max_length=100, default='Nukus')
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
 
     category = models.ManyToManyField(Category, related_name="master_category")

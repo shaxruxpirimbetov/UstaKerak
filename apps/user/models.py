@@ -38,3 +38,17 @@ class Master(models.Model):
         verbose_name = 'Master'
         verbose_name_plural = 'Masters'
         ordering = ['-created_at']
+
+
+class MasterPortfolioPhotos(models.Model):
+    master = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='master_portfolio_photos')
+    photo = models.ImageField(upload_to='photos/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.master.user.username}, {self.master.first_name}, {self.master.last_name}"
+
+    class Meta:
+        verbose_name = 'Master Portfolio Photos'
+        verbose_name_plural = 'Master Portfolio Photos'
+        ordering = ['-created_at']

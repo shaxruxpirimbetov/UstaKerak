@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
-from rest_framework import generics, permissions
-from .models import Master
+from rest_framework import generics, permissions, parsers
+from rest_framework.response import Response
+
+from .models import Master, MasterPortfolioPhotos
 from .serializers import UserSerializer, MasterSerializer
 from .permissions import IsAdminOrMe, IsAdminOrMine
 
@@ -23,12 +25,23 @@ class UserDetailAPIView(generics.RetrieveAPIView):
 
 
 class MasterListCreateAPIView(generics.ListCreateAPIView):
+    parser_classes = [parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser]
     queryset = Master.objects.all()
     serializer_class = MasterSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        images = request.FILES.getlist("master_portfolio_photos")
 
-class MasterDetailAPIView(generics.RetrieveUpdateAPIView):
+        for image in images:
+            MasterPortfolioPhotos.objects.create(master=serializer.instance, photo=image)
+        return Response(serializer.data, status=201)
+
+
+class MasterDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Master.objects.all()
     serializer_class = MasterSerializer
 

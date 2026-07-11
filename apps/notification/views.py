@@ -7,12 +7,16 @@ from .permissions import IsAdminOrMine
 
 
 class NotificationListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Notification.objects.all()
+        return Notification.objects.filter(for_user=self.request.user)
 
     def get_permissions(self):
         if self.request.method == "GET":
-            return [IsAdminOrMine()]
+            return [permissions.IsAuthenticated()]
         return [permissions.IsAdminUser()]
 
     def get(self, request, *args, **kwargs):

@@ -35,7 +35,4 @@ class ApplicationListCreateAPIView(generics.ListCreateAPIView):
 class ApplicationDetailAPIView(generics.RetrieveUpdateAPIView):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
-    def get_permissions(self):
-        if self.request.method == "GET":
-            return [permissions.AllowAny()]
-        return [permissions.IsAdminUser()]
+    permission_classes = [IsAdminOrMine, IsMaster]

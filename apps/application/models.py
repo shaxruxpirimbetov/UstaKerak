@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
+
+from apps.category.models import Category
 from apps.user.models import Master
 
 User = get_user_model()
@@ -16,6 +18,7 @@ application_status_choices = [
 
 class Application(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='application_user')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='application_category')
     master = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='application_master', null=True, blank=True)
     problem = models.TextField(validators=[MinLengthValidator(10), MaxLengthValidator(1000)])
     address = models.CharField(max_length=124)

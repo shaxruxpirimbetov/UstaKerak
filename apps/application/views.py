@@ -22,7 +22,7 @@ class ApplicationListCreateAPIView(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        masters = Master.objects.filter(is_active=True)
+        masters = Master.objects.filter(is_active=True, is_online=True)
         for master in masters:
             Notification.objects.create(
                 title="New Application",
@@ -36,4 +36,7 @@ class ApplicationListCreateAPIView(generics.ListCreateAPIView):
 class ApplicationDetailAPIView(generics.RetrieveUpdateAPIView):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
-    permission_classes = [IsAdminOrMine, IsMaster]
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]

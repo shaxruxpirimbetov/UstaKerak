@@ -3,6 +3,7 @@ from rest_framework.response import Response
 
 from .models import Notification
 from .serializers import NotificationSerializer
+from .permissions import IsAdminOrMine
 
 
 class NotificationListCreateAPIView(generics.ListCreateAPIView):
@@ -11,7 +12,7 @@ class NotificationListCreateAPIView(generics.ListCreateAPIView):
 
     def get_permissions(self):
         if self.request.method == "GET":
-            return [permissions.AllowAny()]
+            return [IsAdminOrMine()]
         return [permissions.IsAdminUser()]
 
     def get(self, request, *args, **kwargs):

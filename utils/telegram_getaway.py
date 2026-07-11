@@ -1,6 +1,7 @@
+from decouple import config
 import requests
 
-TELEGRAM_GATEWAY_TOKEN = "твой_access_token"  # получи на https://gateway.telegram.org/
+TELEGRAM_GATEWAY_TOKEN = config("TG_ACCESS_TOKEN")
 
 def send_verification_code(phone_number: str, code: str = None, code_length: int = 6) -> dict:
     """

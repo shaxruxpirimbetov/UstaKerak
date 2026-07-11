@@ -6,9 +6,12 @@ from apps.user.models import Master
 User = get_user_model()
 
 application_status_choices = [
-    ("waiting", "Waiting"),
-    ("processing", "Processing"),
-    ("ended", "Ended"),
+    ("waiting", "Qidirilmoqda"),        # заявка создана, идёт подбор мастера
+    ("master_found", "Usta topildi"),   # мастер назначен, ждём его подтверждения/выезда
+    ("on_the_way", "Yo'lda"),           # мастер выехал
+    ("in_progress", "Ishlanmoqda"),     # мастер работает на месте
+    ("completed", "Yakunlandi"),        # успешно завершено
+    ("cancelled", "Bekor qilindi"),     # отменено клиентом/мастером/системой
 ]
 
 class Application(models.Model):
@@ -19,7 +22,7 @@ class Application(models.Model):
     address_latlng = models.JSONField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    status = models.CharField(max_length=10, choices=application_status_choices, default='waiting')
+    status = models.CharField(max_length=24, choices=application_status_choices, default='waiting')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

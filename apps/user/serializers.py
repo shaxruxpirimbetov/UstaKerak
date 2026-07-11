@@ -26,3 +26,9 @@ class MasterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Master
         fields = "__all__"
+
+
+class MasterOnlineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Master
+        fields = ["is_online"]

@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, parsers
 from rest_framework.response import Response
 
 from .models import Master, MasterPortfolioPhotos
-from .serializers import UserSerializer, MasterSerializer
+from .serializers import UserSerializer, MasterSerializer, MasterOnlineSerializer
 from .permissions import IsAdminOrMe, IsAdminOrMine
 
 User = get_user_model()
@@ -49,3 +49,9 @@ class MasterDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [permissions.AllowAny()]
         return [IsAdminOrMine()]
+
+
+class MasterOnlineToggleAPIView(generics.UpdateAPIView):
+    queryset = Master.objects.all()
+    serializer_class = MasterOnlineSerializer  # только поле is_online
+    permission_classes = [IsAdminOrMine]

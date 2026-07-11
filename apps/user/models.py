@@ -26,6 +26,7 @@ class Master(models.Model):
     experience_year = models.FloatField(validators=[MinValueValidator(0)], default=0)
     working_area = models.CharField(max_length=100, default='Nukus')
     is_active = models.BooleanField(default=True)
+    is_online = models.BooleanField(default=False)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="master_category")
     created_at = models.DateTimeField(auto_now_add=True)

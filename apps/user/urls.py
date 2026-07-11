@@ -7,4 +7,5 @@ urlpatterns = [
 
     path("master/", views.MasterListCreateAPIView.as_view()),
     path("master/<int:pk>/", views.MasterDetailAPIView.as_view()),
+    path("master/online-toggle/<int:pk>/", views.MasterOnlineToggleAPIView.as_view()),
 ]

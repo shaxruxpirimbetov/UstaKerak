@@ -18,7 +18,7 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
         return [permissions.IsAdminUser()]
 
 
-class UserDetailAPIView(generics.RetrieveAPIView):
+class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAdminOrMe]

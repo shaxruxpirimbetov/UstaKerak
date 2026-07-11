@@ -5,7 +5,7 @@ from apps.category.models import Category
 
 
 class User(AbstractUser):
-    phone = models.CharField(max_length=11, unique=True)
+    phone = models.CharField(max_length=13, unique=True)
     region = models.CharField(max_length=100, default='Nukus')
 
     def __str__(self):

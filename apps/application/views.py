@@ -1,7 +1,11 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
+
+from apps.user.models import Master
+from apps.notification.models import Notification
 from .models import Application
 from .serializers import ApplicationSerializer
-from .permissions import IsAdminOrMine
+from .permissions import IsAdminOrMine, IsMaster
 
 
 class ApplicationListCreateAPIView(generics.ListCreateAPIView):
@@ -13,9 +17,22 @@ class ApplicationListCreateAPIView(generics.ListCreateAPIView):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
+        masters = Master.objects.filter(is_active=True)
+        for master in masters:
+            Notification.objects.create(
+                title="New Application",
+                content=f"New Application. Type quickly",
+                for_user=master.user
+            )
+
+        serializer.save()
+        return Response(serializer.data, status=201)
 
 class ApplicationDetailAPIView(generics.RetrieveUpdateAPIView):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
-    permission_classes = [IsAdminOrMine]
+    permission_classes = [IsAdminOrMine, IsMaster]

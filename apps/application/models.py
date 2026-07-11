@@ -13,9 +13,10 @@ application_status_choices = [
 
 class Application(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='application_user')
-    master = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='application_master')
+    master = models.ForeignKey(Master, on_delete=models.CASCADE, related_name='application_master', null=True, blank=True)
     problem = models.TextField(validators=[MinLengthValidator(10), MaxLengthValidator(1000)])
     address = models.CharField(max_length=124)
+    address_latlng = models.JSONField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     status = models.CharField(max_length=10, choices=application_status_choices, default='waiting')

@@ -15,6 +15,8 @@ urlpatterns = [
     path("api/category/", include("apps.category.urls")),
     path("api/application/", include("apps.application.urls")),
     path("api/review/", include("apps.review.urls")),
+    path("api/notification/", include("apps.notification.urls")),
+    path("api/subscription/", include("apps.subscription.urls")),
 
     path("api/token/", TokenObtainPairView.as_view()),
     path("api/refresh/", TokenRefreshView.as_view()),

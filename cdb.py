@@ -5,7 +5,7 @@ path = os.listdir()
 if "db.sqlite3" in path:
     os.remove("db.sqlite3")
 
-apps = ["apps/user", "application", "category", "review"]
+apps = ["apps/user", "application", "category", "review", "notification"]
 
 for app in apps:
     path = os.listdir(app)

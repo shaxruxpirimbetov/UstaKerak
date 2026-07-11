@@ -73,11 +73,11 @@ WSGI_APPLICATION = 'UstaKerak.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "ustakerak",
-        'USER': "shax",
-        'PASSWORD': "shax",
-        'HOST': "localhost",
-        'PORT': 5432,
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST", "localhost"),
+        'PORT': config("DB_PORT", 5423),
     }
 }
 

@@ -28,7 +28,7 @@ class Master(models.Model):
     is_active = models.BooleanField(default=True)
     is_online = models.BooleanField(default=False)
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="master_category")
+    category = models.ManyToManyField(Category, related_name="master_category")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -21,16 +21,15 @@ class ApplicationListCreateAPIView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        masters = Master.objects.filter(is_active=True, is_online=True)
+        masters = Master.objects.filter(is_active=True, is_online=True, category=serializer.instance.category)
         for master in masters:
             Notification.objects.create(
                 title="New Application",
                 content=f"New Application. Type quickly",
                 for_user=master.user
             )
-
-        serializer.save()
         return Response(serializer.data, status=201)
 
 class ApplicationDetailAPIView(generics.RetrieveUpdateAPIView):

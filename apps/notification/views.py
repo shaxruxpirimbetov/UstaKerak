@@ -3,16 +3,11 @@ from rest_framework.response import Response
 
 from .models import Notification
 from .serializers import NotificationSerializer
-from .permissions import IsAdminOrMine
+from .permissions import IsRecipientOrAdmin
 
 
 class NotificationListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = NotificationSerializer
-
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Notification.objects.all()
-        return Notification.objects.filter(for_user=self.request.user)
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -20,7 +15,10 @@ class NotificationListCreateAPIView(generics.ListCreateAPIView):
         return [permissions.IsAdminUser()]
 
     def get(self, request, *args, **kwargs):
-        notifications = Notification.objects.all()
+        if self.request.user.is_superuser:
+             notifications = Notification.objects.all()
+        else:
+            notifications = Notification.objects.filter(for_user=self.request.user)
         serializer = NotificationSerializer(notifications, many=True)
 
         if request.user.is_authenticated:
@@ -35,8 +33,4 @@ class NotificationListCreateAPIView(generics.ListCreateAPIView):
 class NotificationDetailAPIView(generics.RetrieveUpdateAPIView):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-
-    def get_permissions(self):
-        if self.request.method == "GET":
-            return [permissions.AllowAny()]
-        return [permissions.IsAdminUser()]
+    permission_classes = [permissions.IsAuthenticated, IsRecipientOrAdmin]

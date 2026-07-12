@@ -5,9 +5,12 @@ from .models import Master, MasterPortfolioPhotos
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=6)
+
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["id", "username", "phone", "region", "password"]  # НЕ "__all__"
+        read_only_fields = ["id"]
 
     def create(self, validated_data):
         user = User.objects.create(**validated_data)

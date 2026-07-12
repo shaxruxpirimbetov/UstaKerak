@@ -28,6 +28,7 @@ class MasterListCreateAPIView(generics.ListCreateAPIView):
     parser_classes = [parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser]
     queryset = Master.objects.all()
     serializer_class = MasterSerializer
+    search_fields = ["first_name", "last_name"]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def create(self, request, *args, **kwargs):

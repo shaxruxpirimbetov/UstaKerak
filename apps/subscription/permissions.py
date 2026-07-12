@@ -10,3 +10,9 @@ class IsAdminOrMine(permissions.IsAdminUser):
             return False
 
         return obj.master == master or request.user.is_superuser
+
+
+class IsSubscriptionOwnerOrAdmin(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        u = request.user
+        return u.is_authenticated and (u.is_superuser or u == obj.master.user)
